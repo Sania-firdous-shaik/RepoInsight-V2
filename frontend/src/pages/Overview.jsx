@@ -1,0 +1,22 @@
+import {useEffect,useState} from 'react';
+import {Link} from 'react-router-dom';
+import {Activity,ArrowUpRight,Boxes,Code2,FileCode2,Files,GitBranch,MessageSquareText,Search,Sparkles,Workflow} from 'lucide-react';
+import {useWorkspace} from '../context/WorkspaceContext';
+import api from '../services/api';
+
+const tools=[['AI Code Assistant',MessageSquareText,'assistant','Ask multi-file questions with cited evidence.'],['Code Explorer',Files,'explorer','Browse, explain, and summarize indexed files.'],['AI Summarization',Sparkles,'summarize','Summarize a repository, folder, file, or workflow.'],['Semantic Code Search',Search,'search','Find functions, endpoints, and concepts.'],['Architecture Explorer',Workflow,'architecture','Explore a repository grounded diagram.'],['Documentation Generator',FileCode2,'docs','Generate repository-backed docs.']];
+export default function Overview(){
+  const {repos,selectedRepoId,selectRepo,error}=useWorkspace();const [stats,setStats]=useState(null),[statsError,setStatsError]=useState('');const activeRepo=repos.find(r=>String(r.id)===String(selectedRepoId));
+  useEffect(()=>{if(!selectedRepoId&&repos.length)selectRepo(repos[0].id)},[repos,selectedRepoId]);
+  useEffect(()=>{if(!selectedRepoId){setStats(null);return}api.get(`/repositories/${selectedRepoId}/stats`).then(r=>{setStats(r.data);setStatsError('')}).catch(e=>setStatsError(e.response?.data?.detail||e.message||'Repository stats are unavailable.'))},[selectedRepoId,activeRepo?.status,activeRepo?.commit_sha]);
+  const repo=stats||repos.find(r=>String(r.id)===String(selectedRepoId));
+  return <><div className="page-heading"><div><div className="eyebrow">WORKSPACE / OVERVIEW</div><h1>Developer workspace</h1><p className="muted">Your repository, tools, and indexing status at a glance.</p></div><Link className="outline" to="/repositories"><Boxes size={15}/> My Repositories</Link></div>
+    {error&&<div className="error banner">Repository service unavailable: {error}</div>}{statsError&&repo&&<div className="error banner">{statsError}</div>}
+    {!repos.length?<section className="panel onboarding-card"><div className="onboarding-icon"><Code2/></div><div><h2>Connect a repository to get started</h2><p className="muted">Index a public GitHub project to enable code search, explanations, and AI answers.</p></div><Link className="primary" to="/repositories">Add repository <ArrowUpRight size={14}/></Link></section>:<>
+      <section className="overview-repo panel"><div className="overview-repo-main"><div className="repo-avatar"><Code2 size={18}/></div><div><label className="eyebrow">SELECTED REPOSITORY</label><select className="overview-select" value={selectedRepoId} onChange={e=>selectRepo(e.target.value)}>{repos.map(r=><option key={r.id} value={r.id}>{r.owner}/{r.name}</option>)}</select><div className="muted">{repo?.summary||'Repository indexing is in progress.'}</div></div></div><span className={`repo-status ${repo?.status||'queued'}`}>{repo?.status}</span></section>
+      <section className="stats compact-stats"><article className="stat-card"><div className="stat-icon blue"><Files size={16}/></div><span>Indexed files</span><strong>{repo?.file_count??'—'}</strong></article><article className="stat-card"><div className="stat-icon green"><Code2 size={16}/></div><span>Indexed chunks</span><strong>{repo?.chunk_count??'—'}</strong></article><article className="stat-card"><div className="stat-icon purple"><GitBranch size={16}/></div><span>Branch / commit</span><strong className="branch-stat">{repo?.branch||'—'}</strong><small>{repo?.commit_sha?repo.commit_sha.slice(0,12):'Commit not indexed'}</small></article></section>
+      <div className="overview-meta"><span><Activity size={14}/> Index status <b className={`repo-status ${repo?.status}`}>{repo?.status}</b></span><span>Last record update <b>{repo?.last_updated_at?new Date(repo.last_updated_at).toLocaleString():repo?.created_at?new Date(repo.created_at).toLocaleString():'—'}</b></span></div>
+      <div className="section-heading tools-heading"><div><h2>Repository tools</h2><p className="muted">Open a dedicated workspace for this repository.</p></div></div><div className="tools-grid">{tools.map(([label,Icon,route,description])=><Link key={route} to={`/repos/${selectedRepoId}/${route}`} className="tool-card"><span className="tool-icon"><Icon size={17}/></span><span className="tool-copy"><b>{label}</b><small>{description}</small></span><ArrowUpRight size={14} className="tool-arrow"/></Link>)}</div>
+    </>}
+  </>;
+}

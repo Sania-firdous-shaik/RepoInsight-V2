@@ -1,0 +1,12 @@
+import {useEffect,useState} from 'react';
+import {Link} from 'react-router-dom';
+import {CheckCircle2,Database,KeyRound,LoaderCircle,UserRound} from 'lucide-react';
+import {useWorkspace} from '../context/WorkspaceContext';
+import api from '../services/api';
+
+export default function Settings(){
+  const {user,selectedRepoId,repos}=useWorkspace();const [settings,setSettings]=useState(null),[error,setError]=useState('');
+  useEffect(()=>{api.get('/settings').then(r=>setSettings(r.data)).catch(e=>setError(e.response?.data?.detail||'Settings are unavailable.'))},[]);
+  const repo=repos.find(r=>String(r.id)===String(selectedRepoId));
+  return <><div className="page-heading"><div><div className="eyebrow">PROJECT / SETTINGS</div><h1>Settings</h1><p className="muted">Account and non-secret workspace configuration.</p></div></div>{error&&<div className="error banner">{error}</div>}<div className="settings-grid"><section className="panel settings-card"><div className="settings-card-title"><UserRound size={16}/><h2>Account</h2></div><div className="setting-row"><span>Email</span><b>{settings?.email||user?.email||'—'}</b></div><div className="setting-row"><span>Workspace</span><b>Personal</b></div></section><section className="panel settings-card"><div className="settings-card-title"><Database size={16}/><h2>AI and indexing</h2></div><div className="setting-row"><span>Generation provider</span><b>Groq</b></div><div className="setting-row"><span>Generation configuration</span><b className={settings?.generation_configured?'configured':'not-configured'}>{settings?.generation_configured?'Ready':'Needs server configuration'}</b></div><div className="setting-row"><span>Embedding model</span><code>{settings?.embedding_model||<LoaderCircle className="spin" size={13}/>}</code></div><div className="setting-row"><span>Context token budget</span><b>{settings?.context_token_budget?.toLocaleString()||'—'}</b></div><p className="setting-note"><KeyRound size={14}/> Credentials and API keys are never shown in this page.</p></section><section className="panel settings-card"><div className="settings-card-title"><CheckCircle2 size={16}/><h2>Selected repository</h2></div>{repo?<><div className="setting-row"><span>Repository</span><b>{repo.owner}/{repo.name}</b></div><div className="setting-row"><span>Index status</span><b>{repo.status}</b></div><Link className="text-link" to={`/repos/${repo.id}/overview`}>Open repository overview</Link></>:<div className="panel-empty">Select a repository from the header to see its status.</div>}</section></div></>;
+}

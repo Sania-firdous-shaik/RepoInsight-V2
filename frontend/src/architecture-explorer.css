@@ -1,0 +1,49 @@
+.architecture-explorer{display:grid;gap:14px;min-width:0;color:#dce5f1}
+.architecture-explorer>.page-heading{margin-bottom:0;align-items:center}
+.architecture-explorer>.page-heading h1{margin:2px 0 4px;font-size:clamp(20px,2vw,25px);letter-spacing:-.035em}
+.architecture-generator-heading p{margin:0;color:#8797aa;font-size:12px}
+.architecture-generate-button{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.architecture-generator-status{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;border:1px solid #273444;background:#111923;color:#9eacbd;font-size:11px}
+.architecture-generator-status>span{display:inline-flex;align-items:center;gap:7px}
+.architecture-status-ready{color:#b8d6c6}
+.architecture-status-warning{color:#d0bb83}
+.architecture-render-panel{overflow:auto;min-height:360px;padding:0;border:1px solid #273444;background:#0a0a0a}
+.architecture-diagram{min-height:360px;background:#0a0a0a}
+.architecture-diagram-svg{display:grid;min-height:360px;place-items:center;padding:22px;overflow:auto}
+.architecture-diagram-svg svg{display:block;width:auto!important;height:auto!important;max-width:100%!important;max-height:70vh;margin:auto}
+.architecture-diagram-message{padding:28px;color:#9eacbd;text-align:center;font-size:12px}
+.architecture-diagram-message.error{color:#d5a6a6}
+.architecture-generator-summary,.architecture-generator-evidence{padding:15px 17px;border:1px solid #273444;background:#111923}
+.architecture-generator-summary p{margin:8px 0 0;color:#c7d1dc;font-size:12px;line-height:1.7}
+.architecture-generator-components{padding:15px 17px;border:1px solid #273444;background:#111923}
+.architecture-component-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.architecture-component-list article{min-width:0;padding:10px 11px;border:1px solid #263343;background:#0d131b}
+.architecture-component-list article>div{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.architecture-component-list h2{margin:0;color:#d5dfe9;font-size:12px;font-weight:600}
+.architecture-component-list article>div>span{flex:none;color:#778ba1;font:9px 'DM Mono',monospace;text-transform:uppercase}
+.architecture-component-list article p{margin:6px 0 0;color:#9eacbd;font-size:10px;line-height:1.55}
+.architecture-component-list article>small{display:block;margin-top:7px;color:#8797aa;font-size:9px}
+.architecture-evidence-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.architecture-evidence-heading p{margin:5px 0 0;color:#8797aa;font-size:11px}
+.architecture-export-menu{position:relative}
+.architecture-export-menu summary{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid #344254;border-radius:5px;background:#141c27;color:#aebed1;cursor:pointer;font-size:10px;list-style:none}
+.architecture-export-menu summary::-webkit-details-marker{display:none}
+.architecture-export-menu[open] summary,.architecture-export-menu summary:hover{border-color:#58789e;color:#d5e3f3}
+.architecture-export-menu>div{position:absolute;top:calc(100% + 5px);right:0;z-index:20;display:grid;min-width:170px;padding:4px;border:1px solid #344254;border-radius:6px;background:#121a24}
+.architecture-export-menu button{padding:7px 9px;border:0;border-radius:4px;background:transparent;color:#c0cede;text-align:left;font-size:10px}
+.architecture-export-menu button:hover{background:#202c3a}
+.architecture-source-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin:13px 0 0;padding:0;list-style:none}
+.architecture-source-list button{display:flex;width:100%;min-width:0;align-items:center;gap:8px;padding:8px 6px;border:0;border-bottom:1px solid #202b38;background:transparent;color:#bfccda;text-align:left}
+.architecture-source-list button:hover{background:#182330}
+.architecture-source-list button>svg{flex:none;color:#93a8c0}
+.architecture-source-list button>span{display:grid;min-width:0;flex:1;gap:3px}
+.architecture-source-list button b,.architecture-source-list button small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.architecture-source-list button b{font:10px 'DM Mono',monospace;font-weight:500}
+.architecture-source-list button small{color:#7f90a4;font-size:9px}
+.architecture-source-list button>small{flex:none}
+.architecture-generator-empty{padding:22px;border:1px solid #273444;background:#111923}
+.architecture-generator-empty h2{margin:0 0 7px;color:#dce5f1;font-size:15px}
+.architecture-generator-empty p{margin:0;font-size:11px}
+.architecture-limit-note{display:flex;align-items:center;gap:7px;margin:0;color:#a79771;font-size:10px}
+.architecture-loading{display:flex;align-items:center;gap:10px;padding:18px;color:#9eacbd;font-size:12px}
+@media(max-width:760px){.architecture-explorer>.page-heading{align-items:flex-start;flex-direction:column}.architecture-generator-status{align-items:flex-start;flex-direction:column}.architecture-source-list,.architecture-component-list{grid-template-columns:minmax(0,1fr)}.architecture-render-panel,.architecture-diagram,.architecture-diagram-svg{min-height:300px}}
